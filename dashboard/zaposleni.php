@@ -2,13 +2,13 @@
 session_start();
 require '../config/auth.php';
 include '../config/db_connection.php';
+include '../classes/Models/dropdown.php';
 include '../classes/zaposleni_klasa.php';
 
 
 /* Filterovanje zaposlenih prema poziciji */
 if(isset($_GET['select_position'])):
     $position = $_GET['select_position'];
-
     if($position == 'All'):
         $sql = 'SELECT zaposleni.name,surname,email,position_id,salary,zaposleni.id,pozicija.pozicija_name FROM zaposleni JOIN pozicija ON zaposleni.position_id = pozicija.pozicija_id';
     else: 
@@ -23,7 +23,8 @@ $result = mysqli_query($connection, $sql);
 $zaposleni = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
 /* Prikupljanje podataka za popularizovanje SELECT opcije za filterovanje */
-$pozicije = mysqli_fetch_all(mysqli_query($connection,'SELECT * FROM pozicija'));
+$pozicije = Dropdown::Positions($connection);
+//$pozicije = mysqli_fetch_all(mysqli_query($connection,'SELECT * FROM pozicija'));
 
 /* Brisanje pojedinačnog zaposlenog iz baze */
 if(isset($_POST['delete'])):

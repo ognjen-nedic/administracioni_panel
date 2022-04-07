@@ -7,6 +7,7 @@ class Zaposleni {
     public $position;
     public $salary;
     public $id;
+    public $display;
 
     function __construct($row){
         $this->name = $row['name'];
@@ -16,10 +17,13 @@ class Zaposleni {
         $this->id = $row['id'];
         $this->position = $row['pozicija_name'];
     }
-
+    
     public function prikazi_radnika($type) {
         if($type=='lista'):
-        echo 
+            if($this->position == 'administrator'):
+                $this->display = 'none';
+            endif;
+            echo 
         "<tr>
             <td>$this->name</td>
             <td>$this->surname</td>
@@ -28,7 +32,7 @@ class Zaposleni {
             <td>$this->position</td>
             <td style='width:60px'><a href='edit_employee.php?id=$this->id' class='btn'>Edit</a></td>
             <td>
-            <form name='delete' action='' method='POST'>
+            <form style='display : $this->display' name='delete' action='' method='POST'>
                 <input type='hidden' name='id_to_delete' value='$this->id' >
                 <input type='submit' name='delete' value='Delete' class='btn'>
             </form>

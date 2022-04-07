@@ -10,18 +10,20 @@ class Login {
         $result = mysqli_query($GLOBALS['connection'], $sql);
         $user = mysqli_fetch_assoc($result);
         $user_id = $user['id'];
+        $user_email = $user['email'];
         $user_role = $user['permissions'];
 
         if($result->num_rows > 0) {
-            $this->CreateUserSession($user_id, $user_role);
+            $this->CreateUserSession($user_id, $user_email, $user_role);
             return true;
         } else {       
             return false;
         }  
     }
-    public function CreateUserSession($user_id, $role) {
+    public function CreateUserSession($user_id, $user_email, $role) {
         $_SESSION['user_id'] = $user_id;
-        $_SESSION['role'] = $role;    
+        $_SESSION['email'] = $user_email;
+        $_SESSION['role'] = $role;
     }
 }
 
